@@ -1,0 +1,28 @@
+version: '3.7'
+services:
+  db:
+    image: mongo
+    container_name: db
+    volumes:
+      - data:/data/db
+    ports:
+      - 27017:27017
+
+  server:
+    container_name: server
+    depends_on:
+      - db
+    restart: always
+    build: server
+    ports:
+      - 8000:8000
+    environment:
+      - PORT=8000
+      - DATABASE_ADDRESS=mongodb://db:27017/node_c_tro_bien
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+
+volumes:
+  data:
+
